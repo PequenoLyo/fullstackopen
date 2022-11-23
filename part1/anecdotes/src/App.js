@@ -21,20 +21,23 @@ const App = () => {
   };
 
   const voteAnecdote = () => {
-    const copy = points;
+    const copy = [...points];
     copy[selected] += 1;
     setPoints(copy);
-    setSelected(selected);
-    console.log("Voted");
-    console.log(points);
   };
+
+  const bestAnecdoteIndex = points.indexOf(Math.max(...points));
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
-      <p>{"has " + points[selected] + " points"}</p>
+      <p>has {points[selected]} points</p>
       <button onClick={voteAnecdote}>vote</button>
       <button onClick={nextAnecdote}>next anecdote</button>
+      <h1>Anecdote with the most votes</h1>
+      <p>{anecdotes[bestAnecdoteIndex]}</p>
+      <p>has {points[bestAnecdoteIndex]} points</p>
     </div>
   );
 };
