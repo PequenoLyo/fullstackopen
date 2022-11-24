@@ -1,6 +1,5 @@
 import Header from './Header.js';
 import Content from './Content.js';
-import Total from './Total.js';
 
 const Course = (props) => {
   const numberOfExercises = props.course.parts.reduce(
