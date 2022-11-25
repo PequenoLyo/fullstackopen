@@ -1,5 +1,9 @@
 import { useState } from 'react';
 
+import Persons from './Persons.js';
+import Filter from './Filter.js';
+import PersonForm from './PersonForm.js';
+
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456', id: 1 },
@@ -41,39 +45,16 @@ const App = () => {
     return persons.some((person) => person.name === n);
   };
 
-  const isPersonShown = (name, nameFilter) => {
-        return name.toLowerCase().includes(nameFilter.toLowerCase());
-  };
+ 
 
   return (
     <div>
       <h2>Phonebook</h2>
-      filter shown with{' '}
-      <input value={nameFilter} onChange={handleFilterChange} />
+      <Filter filter={nameFilter} onFilterChange={handleFilterChange} />
       <h2>Add a new</h2>
-      <form onSubmit={handleNewEntry}>
-        <div>
-          <div>
-            name: <input value={newName} onChange={handleNameChange} />
-          </div>
-          <div>
-            number: <input value={newNumber} onChange={handleNumberChange} />
-          </div>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm name={newName} number={newNumber} onFormSubmit={handleNewEntry} onNameChange={handleNameChange} onNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      {persons.map(
-        (p) =>
-          isPersonShown(p.name, nameFilter) && (
-            <p key={p.id}>
-              {' '}
-              {p.name} {p.number}{' '}
-            </p>
-          )
-      )}
+      <Persons persons={persons} filter={nameFilter} />
     </div>
   );
 };
