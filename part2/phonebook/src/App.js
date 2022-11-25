@@ -7,8 +7,9 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
     { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 },
   ]);
+  const [nameFilter, setNameFilter] = useState('');
   const [newName, setNewName] = useState('');
-  const [newNumber, setNewNumber] = useState();
+  const [newNumber, setNewNumber] = useState('');
 
   const handleNewEntry = (e) => {
     e.preventDefault();
@@ -24,6 +25,10 @@ const App = () => {
     }
   };
 
+  const handleFilterChange = (e) => {
+    setNameFilter(e.target.value);
+  };
+
   const handleNameChange = (e) => {
     setNewName(e.target.value);
   };
@@ -36,9 +41,16 @@ const App = () => {
     return persons.some((person) => person.name === n);
   };
 
+  const isPersonShown = (name, nameFilter) => {
+        return name.toLowerCase().includes(nameFilter.toLowerCase());
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
+      filter shown with{' '}
+      <input value={nameFilter} onChange={handleFilterChange} />
+      <h2>Add a new</h2>
       <form onSubmit={handleNewEntry}>
         <div>
           <div>
@@ -53,9 +65,15 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((p) => {
-        return <p key={p.id}>{p.name} {p.number}</p>;
-      })}
+      {persons.map(
+        (p) =>
+          isPersonShown(p.name, nameFilter) && (
+            <p key={p.id}>
+              {' '}
+              {p.name} {p.number}{' '}
+            </p>
+          )
+      )}
     </div>
   );
 };
