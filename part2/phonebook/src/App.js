@@ -6,12 +6,20 @@ const App = () => {
 
   const handleNewEntry = (e) => {
     e.preventDefault();
-    setPersons([...persons, { name: newName }]);
-    setNewName('');
+    if (isDuplicatePerson(newName)) {
+      alert(`${newName} is already added to phonebook`);
+    } else {
+      setPersons([...persons, { name: newName }]);
+      setNewName('');
+    }
   };
 
   const handleNameChange = (e) => {
     setNewName(e.target.value);
+  };
+
+  const isDuplicatePerson = (n) => {
+        return persons.some((person) => person.name === n);
   };
 
   return (
