@@ -23,6 +23,12 @@ const App = () => {
   }, [countrySearchString])
   console.log('Render', countries.length, 'countries')
 
+const handleCountrySelectionButtonClick = (e) => {
+  console.log('Button click registered')
+  console.log(e.target.value)
+setCountrySearchString(e.target.value)
+}
+
   return (
     <div>
       find coutries:
@@ -30,7 +36,7 @@ const App = () => {
         value={countrySearchString}
         onChange={handleCountrySearchStringChange}
       ></input>
-      <SearchResults countries={countries} />
+      <SearchResults countries={countries} onCountrySelectionButtonClick={handleCountrySelectionButtonClick}/>
     </div>
   );
 };

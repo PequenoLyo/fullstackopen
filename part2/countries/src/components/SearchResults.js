@@ -11,11 +11,11 @@ console.log(props.countries)
     SearchResultsContent = <p>No country found</p>;
   } else if (props.countries.length === 1) {
     SearchResultsContent = props.countries.map((country) => {
-      return <Country country={country} />;
+      return <Country key={country.name.common} country={country} />;
     });
   } else if (props.countries.length <= 10) {
     SearchResultsContent = props.countries.map((country) => {
-      return <CountryShort key={country.name.common} country={country} />
+      return <CountryShort key={country.name.common} country={country} onCountrySelectionButtonClick={props.onCountrySelectionButtonClick}/>
     });
   } else {
     SearchResultsContent = <p>Too many matches, specify another filter</p>;
