@@ -1,11 +1,8 @@
 import Country from './Country.js';
-import CountryShort from './CountryShort.js'
+import CountryShort from './CountryShort.js';
 
 const SearchResults = (props) => {
   var SearchResultsContent;
-
-  console.log('Countries found:')
-console.log(props.countries)
 
   if (props.countries.length === 0) {
     SearchResultsContent = <p>No country found</p>;
@@ -15,7 +12,13 @@ console.log(props.countries)
     });
   } else if (props.countries.length <= 10) {
     SearchResultsContent = props.countries.map((country) => {
-      return <CountryShort key={country.name.common} country={country} onCountrySelectionButtonClick={props.onCountrySelectionButtonClick}/>
+      return (
+        <CountryShort
+          key={country.name.common}
+          country={country}
+          onCountrySelectionButtonClick={props.onCountrySelectionButtonClick}
+        />
+      );
     });
   } else {
     SearchResultsContent = <p>Too many matches, specify another filter</p>;
