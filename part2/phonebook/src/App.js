@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 
-import Persons from './Persons.js';
+import PersonService from './services/persons.js'
+import PersonList from './Persons.js';
 import Filter from './Filter.js';
 import PersonForm from './PersonForm.js';
 
@@ -13,8 +13,8 @@ const App = () => {
 
 useEffect(() => {
   console.log('useEffect triggered')
-  axios
-    .get('http://localhost:3001/persons')
+  PersonService
+    .getAll()
     .then(response => {
       console.log('promise fulfilled')
       setPersons(response.data)
@@ -33,8 +33,8 @@ console.log('Render', persons.length, 'persons')
         number: newNumber,
         id: persons.length +1
       }
-      axios
-      .post('http://localhost:3001/persons', newPerson)
+      PersonService
+      .create(newPerson)
       .then(response => console.log(response))
 
       setPersons(persons.concat(newPerson))
@@ -69,7 +69,7 @@ console.log('Render', persons.length, 'persons')
       <h2>Add a new</h2>
       <PersonForm name={newName} number={newNumber} onFormSubmit={handleNewEntry} onNameChange={handleNameChange} onNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={nameFilter} />
+      <PersonList persons={persons} filter={nameFilter} />
     </div>
   );
 };
