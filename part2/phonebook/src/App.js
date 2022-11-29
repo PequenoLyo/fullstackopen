@@ -28,10 +28,17 @@ console.log('Render', persons.length, 'persons')
     if (isDuplicatePerson(newName)) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons([
-        ...persons,
-        { name: newName, number: newNumber, id: persons.count + 1 },
-      ]);
+      const newPerson = {
+        name: newName,
+        number: newNumber,
+        id: persons.length +1
+      }
+      axios
+      .post('http://localhost:3001/persons', newPerson)
+      .then(response => console.log(response))
+
+      setPersons(persons.concat(newPerson))
+      
       setNewName('');
       setNewNumber('');
     }
