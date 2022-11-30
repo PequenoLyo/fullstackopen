@@ -2,13 +2,8 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-123456",
+      "number": "123",
       "id": 1
-    },
-    {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
     },
     {
       "name": "Mary Poppendieck",
@@ -24,6 +19,16 @@
       "name": "Élio Maia",
       "number": "314234",
       "id": 7
+    },
+    {
+      "name": "Test",
+      "number": "123",
+      "id": 9
+    },
+    {
+      "name": "Test add",
+      "number": "123123",
+      "id": 11
     }
   ]
 }

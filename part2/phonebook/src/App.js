@@ -29,18 +29,34 @@ const App = () => {
   const handleNewEntry = (e) => {
     e.preventDefault();
     if (isDuplicatePerson(newName)) {
-      alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const i = persons.find((person) => person.name === newName).id;
+        const newPerson = {
+          name: newName,
+          number: newNumber,
+        };
+        PersonService.update(i, newPerson)
+     .then(setPersonsWasUpdated(true))
+      .then(setNewName(''))
+      .then(setNewNumber(''))
+
+      } else {
+        return;
+      }
     } else {
       const newPerson = {
         name: newName,
         number: newNumber,
       };
-      PersonService.create(newPerson).then((response) => console.log(response));
+      PersonService.create(newPerson).then((response) => console.log(response))
+      .then(setPersonsWasUpdated(true))
+      .then(setNewName(''))
+      .then(setNewNumber(''))
 
-      setPersonsWasUpdated(true);
-
-      setNewName('');
-      setNewNumber('');
     }
   };
 
@@ -55,13 +71,11 @@ const App = () => {
       return;
     }
     console.log('Removing id', i);
-    PersonService.del(i).then((response) => console.log(response));
+    PersonService.del(i).then((response) => console.log(response))
+    .then(setPersonsWasUpdated(true))
+    .then(setNewName(''))
+    .then(setNewNumber(''))
 
-    // setPersons(persons.filter(person => person.id !== i))
-    //setPersons(persons.map(p => ({...p, id: persons.indexOf(p)})))
-    setPersonsWasUpdated(true);
-    setNewName('');
-    setNewNumber('');
   };
 
   const handleFilterChange = (e) => {
