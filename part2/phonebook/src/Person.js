@@ -1,8 +1,11 @@
 const Person = (props) => {
   return (
-    <p key={props.id}>
+    <div>
       {props.name} {props.number}
-    </p>
+      <button value={props.id} onClick={props.onPersonDelete}>
+        delete
+      </button>
+    </div>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import PersonService from './services/persons.js'
+import PersonService from './services/persons.js';
 import PersonList from './Persons.js';
 import Filter from './Filter.js';
 import PersonForm from './PersonForm.js';
@@ -10,18 +10,21 @@ const App = () => {
   const [nameFilter, setNameFilter] = useState('');
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [personsWasUpdated, setPersonsWasUpdated] = useState(true);
 
-useEffect(() => {
-  console.log('useEffect triggered')
-  PersonService
-    .getAll()
-    .then(response => {
-      console.log('promise fulfilled')
-      setPersons(response.data)
-
-    })
-}, [])
-console.log('Render', persons.length, 'persons')
+  useEffect(() => {
+    if (personsWasUpdated) {
+      console.log('.getAll()');
+      PersonService.getAll().then((response) => {
+        console.log('.getAll() promise fulfilled');
+        setPersons(response.data);
+        setPersonsWasUpdated(false);
+      });
+    } else {
+      return;
+    }
+  }, [personsWasUpdated]);
+  console.log('Render', persons.length, 'persons');
 
   const handleNewEntry = (e) => {
     e.preventDefault();
@@ -31,17 +34,34 @@ console.log('Render', persons.length, 'persons')
       const newPerson = {
         name: newName,
         number: newNumber,
-        id: persons.length +1
-      }
-      PersonService
-      .create(newPerson)
-      .then(response => console.log(response))
+      };
+      PersonService.create(newPerson).then((response) => console.log(response));
 
-      setPersons(persons.concat(newPerson))
-      
+      setPersonsWasUpdated(true);
+
       setNewName('');
       setNewNumber('');
     }
+  };
+
+  const handleDeleteEntry = (e) => {
+    e.preventDefault();
+    const i = e.target.value;
+    if (
+      !window.confirm(
+        `Delete ${persons.find((person) => person.id == i).name}?`
+      )
+    ) {
+      return;
+    }
+    console.log('Removing id', i);
+    PersonService.del(i).then((response) => console.log(response));
+
+    // setPersons(persons.filter(person => person.id !== i))
+    //setPersons(persons.map(p => ({...p, id: persons.indexOf(p)})))
+    setPersonsWasUpdated(true);
+    setNewName('');
+    setNewNumber('');
   };
 
   const handleFilterChange = (e) => {
@@ -60,16 +80,24 @@ console.log('Render', persons.length, 'persons')
     return persons.some((person) => person.name === n);
   };
 
- 
-
   return (
     <div>
       <h2>Phonebook</h2>
       <Filter filter={nameFilter} onFilterChange={handleFilterChange} />
       <h2>Add a new</h2>
-      <PersonForm name={newName} number={newNumber} onFormSubmit={handleNewEntry} onNameChange={handleNameChange} onNumberChange={handleNumberChange} />
+      <PersonForm
+        name={newName}
+        number={newNumber}
+        onFormSubmit={handleNewEntry}
+        onNameChange={handleNameChange}
+        onNumberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
-      <PersonList persons={persons} filter={nameFilter} />
+      <PersonList
+        persons={persons}
+        filter={nameFilter}
+        onPersonDelete={handleDeleteEntry}
+      />
     </div>
   );
 };

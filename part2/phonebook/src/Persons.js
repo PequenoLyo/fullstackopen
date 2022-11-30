@@ -7,8 +7,9 @@ const Persons = (props) => {
   console.log(props.persons)
   return props.persons.map(
     (p) =>
-      isPersonShown(p.name, props.filter) && (
-        <Person key={p.id} name={p.name} number={p.number} />
+      
+    isPersonShown(p.name, props.filter) && (
+        <Person key={p.id} id={p.id} name={p.name} number={p.number} onPersonDelete={props.onPersonDelete}/>
       )
   );
 };

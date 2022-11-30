@@ -6,11 +6,6 @@
       "id": 1
     },
     {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
-    },
-    {
       "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
@@ -21,24 +16,14 @@
       "id": 4
     },
     {
-      "name": "Élio Maia",
-      "number": "918181",
-      "id": 5
-    },
-    {
       "name": "Raquel Matos",
-      "number": "1123123123",
+      "number": "132",
       "id": 6
     },
     {
-      "name": "Ines Burgeois",
-      "number": "123456",
+      "name": "Élio Maia",
+      "number": "314234",
       "id": 7
-    },
-    {
-      "name": "Abel Xavier",
-      "number": "1231215215",
-      "id": 8
     }
   ]
 }
