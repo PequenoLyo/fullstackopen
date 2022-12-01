@@ -4,6 +4,7 @@ import PersonService from './services/persons.js';
 import PersonList from './Persons.js';
 import Filter from './Filter.js';
 import PersonForm from './PersonForm.js';
+import Notification from './Notification.js';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,6 +12,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [personsWasUpdated, setPersonsWasUpdated] = useState(true);
+  const [notificationContent, setNotificationContent] = useState([null, null]);
 
   useEffect(() => {
     if (personsWasUpdated) {
@@ -26,6 +28,20 @@ const App = () => {
   }, [personsWasUpdated]);
   console.log('Render', persons.length, 'persons');
 
+  useEffect(() => {
+    console.log('Notification useEffect triggered');
+    if (!(notificationContent[1] == null)) {
+      console.log('Fire 2 second timer');
+
+      const timer = setTimeout(() => {
+        setNotificationContent([null, null]);
+      }, 3000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [notificationContent]);
+
   const handleNewEntry = (e) => {
     e.preventDefault();
     if (isDuplicatePerson(newName)) {
@@ -40,10 +56,15 @@ const App = () => {
           number: newNumber,
         };
         PersonService.update(i, newPerson)
-     .then(setPersonsWasUpdated(true))
-      .then(setNewName(''))
-      .then(setNewNumber(''))
-
+          .then(setPersonsWasUpdated(true))
+          .then(setNewName(''))
+          .then(setNewNumber(''))
+          .then(
+            setNotificationContent(['success', `Updated ${newPerson.name}`])
+          )
+          .catch(error => {
+            setNotificationContent(['error', `${newPerson.name} has already been removed from the server`])
+          });
       } else {
         return;
       }
@@ -52,30 +73,32 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-      PersonService.create(newPerson).then((response) => console.log(response))
-      .then(setPersonsWasUpdated(true))
-      .then(setNewName(''))
-      .then(setNewNumber(''))
-
+      PersonService.create(newPerson).then((response) => {
+        console.log(response);
+        setPersonsWasUpdated(true);
+        setNewName('');
+        setNewNumber('');
+        setNotificationContent(['success', `Added ${newPerson.name}`]);
+      });
     }
   };
 
   const handleDeleteEntry = (e) => {
     e.preventDefault();
     const i = e.target.value;
-    if (
-      !window.confirm(
-        `Delete ${persons.find((person) => person.id == i).name}?`
-      )
-    ) {
+    const person = persons.find((person) => person.id == i);
+    if (!window.confirm(`Delete ${person.name}?`)) {
       return;
     }
     console.log('Removing id', i);
-    PersonService.del(i).then((response) => console.log(response))
-    .then(setPersonsWasUpdated(true))
-    .then(setNewName(''))
-    .then(setNewNumber(''))
-
+    PersonService.del(i)
+      .then((response) => console.log(response))
+      .then(setPersonsWasUpdated(true))
+      .then(setNewName(''))
+      .then(setNewNumber(''))
+      .then(setNotificationContent(['success', `Deleted ${person.name}`])).catch(error => {
+        setNotificationContent(['error', `${person.name} has already been removed from the server`])
+      })
   };
 
   const handleFilterChange = (e) => {
@@ -96,6 +119,10 @@ const App = () => {
 
   return (
     <div>
+      <Notification
+        className={notificationContent[0]}
+        message={notificationContent[1]}
+      />
       <h2>Phonebook</h2>
       <Filter filter={nameFilter} onFilterChange={handleFilterChange} />
       <h2>Add a new</h2>
