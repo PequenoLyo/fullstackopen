@@ -1,4 +1,6 @@
 Total times:
+- part0: 04:00:00
+- part1: 08:00:00
 - part2: 12:15:00
 
 Average times:
