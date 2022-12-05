@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   {
     id: 1,
@@ -50,12 +52,27 @@ app.get('/api/persons/:id', (request, response) => {
   }
 });
 
+app.post('/api/persons', (request, response) => {
+  const tempId = 0;
+  const id = Math.floor(Math.random() * 10000)
+  console.log(id);
+  const newPerson = {
+    content: request.body.content,
+    id: id,
+    name: request.body.name,
+    number: request.body.number,
+  };
+
+  persons = persons.concat(newPerson)
+  response.json(newPerson)
+});
+
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id);
-persons = persons.filter(person => person.id !== id)
+  persons = persons.filter((person) => person.id !== id);
 
-  response.status(204).end()
-})
+  response.status(204).end();
+});
 
 const PORT = 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
