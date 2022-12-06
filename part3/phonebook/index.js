@@ -53,9 +53,9 @@ app.get('/api/persons/:id', (request, response) => {
 });
 
 app.post('/api/persons', (request, response) => {
-  const tempId = 0;
-  const id = Math.floor(Math.random() * 10000)
-  console.log(id);
+  console.log('POST');
+
+  const id = Math.floor(Math.random() * 10000);
   const newPerson = {
     content: request.body.content,
     id: id,
@@ -63,8 +63,23 @@ app.post('/api/persons', (request, response) => {
     number: request.body.number,
   };
 
-  persons = persons.concat(newPerson)
-  response.json(newPerson)
+  if (newPerson.name === '') {
+    const errorMessage = 'Name must not be empty';
+    response.status(400).send({ error: errorMessage });
+    console.log('POST unsuccessful (400) -', errorMessage);
+  } else if (newPerson.number === '') {
+    const errorMessage = 'Number must not be empty';
+    response.status(400).send({ error: errorMessage });
+    console.log('POST unsuccessful (400) -', errorMessage);
+  } else if (persons.some(person => person.name === newPerson.name)) {
+    const errorMessage = 'Name must be unique';
+    response.status(400).send({ error: errorMessage });
+    console.log('POST unsuccessful (400) -', errorMessage);
+  } else {
+    persons = persons.concat(newPerson);
+    response.json(newPerson);
+    console.log('POST Successful');
+  }
 });
 
 app.delete('/api/persons/:id', (request, response) => {
