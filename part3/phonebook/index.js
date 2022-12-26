@@ -1,8 +1,8 @@
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-var morgan = require('morgan');
 const app = express();
+var morgan = require('morgan');
+const cors = require('cors');
+require('dotenv').config();
 const Person = require('./models/person');
 
 app.use(express.json());
@@ -52,31 +52,18 @@ app.get('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
   console.log('POST');
 
-  const id = Math.floor(Math.random() * 10000);
-  const newPerson = {
-    content: request.body.content,
-    id: id,
-    name: request.body.name,
-    number: request.body.number,
-  };
+   const { name, number } = request.body;
+  console.log(request.body)
 
-  if (newPerson.name === '') {
-    const errorMessage = 'Name must not be empty';
-    response.status(400).send({ error: errorMessage });
-    console.log('POST unsuccessful (400) -', errorMessage);
-  } else if (newPerson.number === '') {
-    const errorMessage = 'Number must not be empty';
-    response.status(400).send({ error: errorMessage });
-    console.log('POST unsuccessful (400) -', errorMessage);
-  } else if (persons.some((person) => person.name === newPerson.name)) {
-    const errorMessage = 'Name must be unique';
-    response.status(400).send({ error: errorMessage });
-    console.log('POST unsuccessful (400) -', errorMessage);
-  } else {
-    persons = persons.concat(newPerson);
-    response.json(newPerson);
-    console.log('POST Successful');
-  }
+  const person = new Person({
+    name: name,
+    number: number,
+  });
+
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
+  })
+  .catch((err) => console.log(err));
 });
 
 app.delete('/api/persons/:id', (request, response) => {
