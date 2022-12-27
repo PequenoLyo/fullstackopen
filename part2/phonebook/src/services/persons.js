@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'https://ancient-snowflake-6281.fly.dev/api/persons';
+const baseUrl = 'http://localhost:8080/api/persons';
 
 const getAll = () => {
   return axios.get(baseUrl);

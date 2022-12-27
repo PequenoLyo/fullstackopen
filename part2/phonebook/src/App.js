@@ -62,8 +62,11 @@ const App = () => {
           .then(
             setNotificationContent(['success', `Updated ${newPerson.name}`])
           )
-          .catch(error => {
-            setNotificationContent(['error', `${newPerson.name} has already been removed from the server`])
+          .catch((error) => {
+            setNotificationContent([
+              'error',
+              `${newPerson.name} has already been removed from the server`,
+            ]);
           });
       } else {
         return;
@@ -79,7 +82,8 @@ const App = () => {
         setNewName('');
         setNewNumber('');
         setNotificationContent(['success', `Added ${newPerson.name}`]);
-      });
+      })
+      .catch(error => console.log(error.response.data.error));
     }
   };
 
@@ -96,9 +100,13 @@ const App = () => {
       .then(setPersonsWasUpdated(true))
       .then(setNewName(''))
       .then(setNewNumber(''))
-      .then(setNotificationContent(['success', `Deleted ${person.name}`])).catch(error => {
-        setNotificationContent(['error', `${person.name} has already been removed from the server`])
-      })
+      .then(setNotificationContent(['success', `Deleted ${person.name}`]))
+      .catch((error) => {
+        setNotificationContent([
+          'error',
+          `${person.name} has already been removed from the server`,
+        ]);
+      });
   };
 
   const handleFilterChange = (e) => {
