@@ -83,7 +83,10 @@ const App = () => {
         setNewNumber('');
         setNotificationContent(['success', `Added ${newPerson.name}`]);
       })
-      .catch(error => console.log(error.response.data.error));
+      .catch(error => {
+        setNotificationContent(['error', error.response.data.error])
+        console.log(error.response.data.error);
+      })
     }
   };
 
