@@ -21,13 +21,14 @@ app.use(
 // });
 
 app.get('/info', (request, response, next) => {
-  Person.find({}).then((persons) => {
-    response.send(
-      `<p>Phonebook has info for ${persons.length} people</p>
+  Person.find({})
+    .then((persons) => {
+      response.send(
+        `<p>Phonebook has info for ${persons.length} people</p>
           <p>${Date()}</p>`
-    );
-  })
-  .catch(error => next(error));
+      );
+    })
+    .catch((error) => next(error));
 });
 
 app.get('/api/persons', (request, response, next) => {
@@ -69,6 +70,23 @@ app.post('/api/persons', (request, response, next) => {
     .catch((error) => next(error));
 });
 
+app.put('/api/persons/:id', (request, response, next) => {
+  console.log('PUT');
+
+  const { name, number } = request.body;
+
+  const person = new Person({
+    name: name,
+    number: number,
+  });
+
+  Person.findByIdAndUpdate(request.params.id, { name, number }, { new: true })
+    .then((updatedPerson) => {
+      response.json(updatedPerson);
+    })
+    .catch((error) => next(error));
+});
+
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
     .then((result) => {
@@ -86,7 +104,7 @@ app.use(unknownEndpoint);
 const errorHandler = (error, request, response, next) => {
   console.error(error.message);
 
-  if (error.name === 'Cast Error') {
+  if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformed id' });
   }
 
