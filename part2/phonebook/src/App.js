@@ -62,12 +62,10 @@ const App = () => {
           .then(
             setNotificationContent(['success', `Updated ${newPerson.name}`])
           )
-          .catch((error) => {
-            setNotificationContent([
-              'error',
-              `${newPerson.name} has already been removed from the server`,
-            ]);
-          });
+          .catch(error => {
+            setNotificationContent(['error', error.response.data.error])
+            console.log(error.response.data.error);
+          })
       } else {
         return;
       }
