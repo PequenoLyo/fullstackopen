@@ -1,0 +1,9 @@
+PUT http://localhost:8080/api/blogs/63ac4703915a0dd1fc2e12ac HTTP/1.1
+content-type: application/json
+
+{
+    "title": "updated title",
+    "author": "raquel",
+    "url": "www.raquelmatos.com",
+    "likes": 9
+}
