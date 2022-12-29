@@ -104,6 +104,10 @@ describe('favorite blog', () => {
 
 describe('most blogs', () => {
   test('of empty list is an empty object', () => {
+    const result = listHelper.mostBlogs([])
+    expect(result).toEqual({})
+  })
+  test('of a bigger list is correctly detected', () => {
     const result = listHelper.mostBlogs(blogs)
     expect(result).toEqual({
       author: 'Robert C. Martin',
@@ -111,5 +115,20 @@ describe('most blogs', () => {
     });
   })
 })
+
+describe('most likes', () => {
+  test('of empty list is an empty object', () => {
+    const result = listHelper.mostLikes([])
+    expect(result).toEqual({})
+  })
+  test('of a bigger list is correctly detected', () => {
+    const result = listHelper.mostLikes(blogs)
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17,
+    });
+  })
+})
+
 
  
