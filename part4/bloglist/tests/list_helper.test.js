@@ -101,3 +101,15 @@ describe('favorite blog', () => {
     });
   });
 });
+
+describe('most blogs', () => {
+  test('of empty list is an empty object', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3,
+    });
+  })
+})
+
+ 
