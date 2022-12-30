@@ -43,6 +43,25 @@ describe('POST tests', () => {
     expect(newBlogs.body).toHaveLength(initialBlogs.body.length + 1);
     expect(newBlogsTitles).toContain('test title');
   });
+
+  test('likes default to 0 if ommitted', async () => {
+    const newBlog = {
+      title: 'test title for default likes',
+      author: 'test author',
+      url: 'test url',
+          };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const newBlogs = await api.get('/api/blogs');
+    const newBlogsTitles = newBlogs.body.map((blog) => blog.title);
+
+    expect(newBlogs.body[newBlogs.body.length - 1].likes).toEqual(0);
+  })
 });
 
 afterAll(() => {
