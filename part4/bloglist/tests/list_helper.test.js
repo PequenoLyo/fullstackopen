@@ -9,7 +9,6 @@ test('dummy returns one', () => {
 });
 
 const listWithOneBlog = testBlogList.listWithOneBlog
-
 const listWithManyBlogs = testBlogList.listWithManyBlogs
 
 describe('total likes', () => {
