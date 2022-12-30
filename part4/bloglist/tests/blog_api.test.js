@@ -62,6 +62,32 @@ describe('POST tests', () => {
 
     expect(newBlogs.body[newBlogs.body.length - 1].likes).toEqual(0);
   })
+
+  test('missing title returns a 400 Bad Request error', async () => {
+    const newBlog = {
+      author: 'test author',
+      url: 'test url',
+      likes: 5,
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
+
+  test('missing url returns a 400 Bad Request error', async () => {
+    const newBlog = {
+      title: 'test title',
+      author: 'test author',
+      likes: 5,
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
 });
 
 afterAll(() => {
