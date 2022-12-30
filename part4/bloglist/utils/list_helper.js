@@ -55,8 +55,6 @@ const mostBlogs = (blogs) => {
     }
   });
 
-  console.log(authorList)
-
   authorList.forEach(uniqueAuthor => {
     if (uniqueAuthor.blogs > topAuthor.blogs) {
       topAuthor = {
@@ -95,8 +93,6 @@ const mostLikes = (blogs) => {
       })
     }
   });
-
-  console.log(authorList)
 
   authorList.forEach(uniqueAuthor => {
     if (uniqueAuthor.likes > topAuthor.likes) {
