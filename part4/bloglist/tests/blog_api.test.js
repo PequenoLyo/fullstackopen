@@ -49,7 +49,7 @@ describe('POST tests', () => {
       title: 'test title for default likes',
       author: 'test author',
       url: 'test url',
-          };
+    };
 
     await api
       .post('/api/blogs')
@@ -61,7 +61,7 @@ describe('POST tests', () => {
     const newBlogsTitles = newBlogs.body.map((blog) => blog.title);
 
     expect(newBlogs.body[newBlogs.body.length - 1].likes).toEqual(0);
-  })
+  });
 
   test('missing title returns a 400 Bad Request error', async () => {
     const newBlog = {
@@ -70,11 +70,8 @@ describe('POST tests', () => {
       likes: 5,
     };
 
-    await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(400)
-  })
+    await api.post('/api/blogs').send(newBlog).expect(400);
+  });
 
   test('missing url returns a 400 Bad Request error', async () => {
     const newBlog = {
@@ -83,11 +80,20 @@ describe('POST tests', () => {
       likes: 5,
     };
 
-    await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(400)
-  })
+    await api.post('/api/blogs').send(newBlog).expect(400);
+  });
+});
+
+describe('deletion of a note', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const initialBlogs = await api.get('/api/blogs');
+    const blogToDelete = initialBlogs.body[initialBlogs.body.length - 1];
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+    const newBlogs = await api.get('/api/blogs');
+    expect(newBlogs.body).toHaveLength(initialBlogs.body.length + 1);
+  });
 });
 
 afterAll(() => {
