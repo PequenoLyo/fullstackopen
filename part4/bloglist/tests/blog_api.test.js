@@ -2,8 +2,14 @@ const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../app');
 const Blog = require('../models/blog');
+const blogList = require('../utils/test_bloglist');
 
 const api = supertest(app);
+
+beforeEach(async () => {
+  await Blog.deleteMany({});
+  await Blog.insertMany(blogList.listWithManyBlogs);
+});
 
 describe('GET tests', () => {
   test('blogs are returned as json', async () => {
@@ -92,7 +98,31 @@ describe('deletion of a note', () => {
     await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
 
     const newBlogs = await api.get('/api/blogs');
-    expect(newBlogs.body).toHaveLength(initialBlogs.body.length + 1);
+    expect(newBlogs.body).toHaveLength(initialBlogs.body.length - 1);
+  });
+});
+
+describe('updating a note', () => {
+  test('succeeds with status code 200 if the update is successful', async () => {
+    const initialBlogs = await api.get('/api/blogs');
+    const blogToUpdate = initialBlogs.body[initialBlogs.body.length - 1];
+
+    const updatedBlog = {
+      title: 'test updated title',
+      author: 'test author',
+      url: 'test url',
+      likes: 5,
+    };
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(200);
+
+    const newBlogs = await api.get('/api/blogs');
+    expect(newBlogs.body[newBlogs.body.length - 1].title).toBe(
+      'test updated title'
+    );
   });
 });
 
