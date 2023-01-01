@@ -1,9 +1,9 @@
 POST http://localhost:8080/api/blogs/ HTTP/1.1
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBlcXVlbm8iLCJpZCI6IjYzYjAzM2E5ZDE3MmY0N2RlMTAzNTc5ZiIsImlhdCI6MTY3MjU3MDI0MX0.cLMdsGAxineM3mlIPT7iU3bIkaUzZMxBRCm7ydrv-AM
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBlcXVlbm8iLCJpZCI6IjYzYjAzM2E5ZDE3MmY0N2RlMTAzNTc5ZiIsImlhdCI6MTY3MjU3MjE4M30.CtE4kFeXGkfdsP69ZVkJDfoGkKTGALzEkPVZlgXWbkI
 
 {
-    "title": "blog with user token and automatic author based on token",
+    "title": "new blog with user token and automatic author based on token",
     "url": "www.maia.com",
     "likes": 9
 }
