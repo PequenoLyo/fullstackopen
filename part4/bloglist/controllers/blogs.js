@@ -1,7 +1,7 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
@@ -25,18 +25,16 @@ blogsRouter.post('/', async (request, response) => {
   const body = request.body;
   // const token = getTokenFrom(request)
   // const decodedToken = jwt.verify(token, process.env.SECRET)
-  console.log('request.token:')
-  console.log(request.token)
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  console.log('decoded token:')
-  console.log(decodedToken)
+  console.log('request.token:');
+  console.log(request.token);
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  console.log('decoded token:');
+  console.log(decodedToken);
   if (!decodedToken.id) {
-    return response.status(401).json({error: 'token missing or invalid'})
+    return response.status(401).json({ error: 'token missing or invalid' });
   }
-  const user = await User.findById(decodedToken.id)
+  const user = await User.findById(decodedToken.id);
 
-
-  
   const blog = await new Blog({
     title: body.title,
     author: user.name,
@@ -65,8 +63,25 @@ blogsRouter.put('/:id', async (request, response) => {
 });
 
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id);
-  response.status(204).end();
+  const id = request.params.id;
+  const blog = await Blog.findById(id);
+
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' });
+  }
+  const user = await User.findById(decodedToken.id);
+
+  console.log(blog);
+  console.log(user.id);
+
+  if (blog.user.toString() === user.id.toString()) {
+    await Blog.findByIdAndRemove(id);
+    response.status(204).end();
+  } else {
+    response.status(401).json({ error: 'unauthorized operation' });
+  }
 });
 
 module.exports = blogsRouter;
