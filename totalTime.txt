@@ -3,6 +3,7 @@ Total times:
 - part1: 08:00:00
 - part2: 12:15:00
 - part3: 10:50:00
+- part4: 11:55:00
 
 Average times:
 - part2: 15.9
