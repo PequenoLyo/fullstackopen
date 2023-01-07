@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import NewBlogForm from './components/NewBlogForm';
+import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -9,6 +10,7 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState('');
+  const [notificationContent, setNotificationContent] = useState([null, null]);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -19,9 +21,23 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
-      //blogService.setToken(user.token)
+      blogService.setToken(user.token);
     }
   }, []);
+
+  useEffect(() => {
+    console.log('Notification useEffect triggered');
+    if (!(notificationContent[1] == null)) {
+      console.log('Fire 5 second timer');
+
+      const timer = setTimeout(() => {
+        setNotificationContent([null, null]);
+      }, 5000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [notificationContent]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -34,11 +50,19 @@ const App = () => {
       });
 
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user));
-      blogService.setToken(user.token)
+      blogService.setToken(user.token);
       setUser(user);
       setUsername('');
       setPassword('');
+      setNotificationContent([
+        'success',
+        `${user.name} has logged in successfully`,
+      ]);
     } catch (exception) {
+      setNotificationContent([
+        'error',
+        `wrong credentials`,
+      ]);
       console.log('Wrong credentials');
     }
   };
@@ -53,18 +77,29 @@ const App = () => {
       const newBlog = await blogService.create({
         title,
         author,
-        url
-      })
-      setBlogs(blogs.concat(newBlog))
-          } catch (exception) {
-
+        url,
+      });
+      setBlogs(blogs.concat(newBlog));
+      setNotificationContent([
+        'success',
+        `a new blog with title '${newBlog.title}' by ${newBlog.author} has been added`,
+      ]);
+    } catch (exception) {
+      setNotificationContent([
+        'error',
+        `error creating blog`,
+      ]);
     }
-  }
+  };
 
   if (!user) {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification
+          className={notificationContent[0]}
+          message={notificationContent[1]}
+        />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -92,11 +127,15 @@ const App = () => {
     return (
       <div>
         <h2>blogs</h2>
+        <Notification
+          className={notificationContent[0]}
+          message={notificationContent[1]}
+        />
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>logout</button>
 
         <h2>create new</h2>
-        <NewBlogForm createNewBlog={createNewBlog}/>
+        <NewBlogForm createNewBlog={createNewBlog} />
 
         <h2>blog list</h2>
         {blogs.map((blog) => (
