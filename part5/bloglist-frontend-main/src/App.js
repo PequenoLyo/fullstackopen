@@ -80,7 +80,7 @@ const App = () => {
         'success',
         `a new blog with title '${newBlog.title}' by ${newBlog.author} has been added`,
       ]);
-    } catch (exception) {
+    } catch {
       setNotificationContent(['error', `error creating blog`]);
     }
   };
@@ -90,10 +90,22 @@ const App = () => {
       const newBlog = await blogService.update(id, updatedBlog);
       const newBlogs = blogs.map((blog) => (blog.id === id ? newBlog : blog));
       setBlogs(newBlogs);
-    } catch (exception) {
+    } catch {
       setNotificationContent(['error', 'error updating blog likes']);
     }
   };
+
+  const deleteBlog = async (id) => {
+    try {
+      await blogService.remove(id)
+  
+      const newBlogs = blogs.filter(blog => blog.id !== id)
+      setBlogs(newBlogs)
+      setNotificationContent(['success', 'blog deleted successfully'])
+    } catch {
+      setNotificationContent(['error', 'error deleting blog'])
+    }
+  }
 
   if (!user) {
     return (
@@ -132,7 +144,7 @@ const App = () => {
         {blogs
           .sort((a, b) => b.likes - a.likes)
           .map((blog) => (
-            <Blog key={blog.id} blog={blog} updateBlogLikes={updateBlogLikes} />
+            <Blog key={blog.id} blog={blog} updateBlogLikes={updateBlogLikes} deleteBlog={deleteBlog} />
           ))}
       </div>
     );
