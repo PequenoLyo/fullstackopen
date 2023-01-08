@@ -30,8 +30,6 @@ const App = () => {
   useEffect(() => {
     console.log('Notification useEffect triggered');
     if (!(notificationContent[1] == null)) {
-      console.log('Fire 5 second timer');
-
       const timer = setTimeout(() => {
         setNotificationContent([null, null]);
       }, 5000);
@@ -62,7 +60,6 @@ const App = () => {
       ]);
     } catch (exception) {
       setNotificationContent(['error', `wrong credentials`]);
-      console.log('Wrong credentials');
     }
   };
 
@@ -90,16 +87,13 @@ const App = () => {
 
   const updateBlogLikes = async (id, updatedBlog) => {
     try {
-      console.log(updatedBlog)
       const newBlog = await blogService.update(id, updatedBlog);
-      const newBlogs = blogs.map((blog) =>
-        blog.id === id ? newBlog : blog
-      );
+      const newBlogs = blogs.map((blog) => (blog.id === id ? newBlog : blog));
       setBlogs(newBlogs);
     } catch (exception) {
       setNotificationContent(['error', 'error updating blog likes']);
     }
-  }
+  };
 
   if (!user) {
     return (
@@ -130,14 +124,16 @@ const App = () => {
         <button onClick={handleLogout}>logout</button>
 
         <h2>create new</h2>
-        <Togglable buttonLabel='new blog'>
-        <NewBlogForm createNewBlog={createNewBlog} />
+        <Togglable buttonLabel="new blog">
+          <NewBlogForm createNewBlog={createNewBlog} />
         </Togglable>
 
         <h2>blog list</h2>
-        {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} updateBlogLikes={updateBlogLikes}/>
-        ))}
+        {blogs
+          .sort((a, b) => b.likes - a.likes)
+          .map((blog) => (
+            <Blog key={blog.id} blog={blog} updateBlogLikes={updateBlogLikes} />
+          ))}
       </div>
     );
   }
