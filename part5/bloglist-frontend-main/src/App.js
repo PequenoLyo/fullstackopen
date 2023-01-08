@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import NewBlogForm from './components/NewBlogForm';
 import Notification from './components/Notification';
+import LoginForm from './components/LoginForm';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import Togglable from './components/Togglable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -59,10 +61,7 @@ const App = () => {
         `${user.name} has logged in successfully`,
       ]);
     } catch (exception) {
-      setNotificationContent([
-        'error',
-        `wrong credentials`,
-      ]);
+      setNotificationContent(['error', `wrong credentials`]);
       console.log('Wrong credentials');
     }
   };
@@ -85,10 +84,7 @@ const App = () => {
         `a new blog with title '${newBlog.title}' by ${newBlog.author} has been added`,
       ]);
     } catch (exception) {
-      setNotificationContent([
-        'error',
-        `error creating blog`,
-      ]);
+      setNotificationContent(['error', `error creating blog`]);
     }
   };
 
@@ -100,27 +96,13 @@ const App = () => {
           className={notificationContent[0]}
           message={notificationContent[1]}
         />
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-            <input
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
+        <LoginForm
+          handleLogin={handleLogin}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          username={username}
+          password={password}
+        />
       </div>
     );
   } else {
@@ -135,7 +117,9 @@ const App = () => {
         <button onClick={handleLogout}>logout</button>
 
         <h2>create new</h2>
+        <Togglable buttonLabel='new blog'>
         <NewBlogForm createNewBlog={createNewBlog} />
+        </Togglable>
 
         <h2>blog list</h2>
         {blogs.map((blog) => (
