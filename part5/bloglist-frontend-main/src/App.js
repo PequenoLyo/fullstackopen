@@ -81,9 +81,8 @@ const App = () => {
         `a new blog with title '${newBlog.title}' by ${newBlog.author} has been added`,
       ]);
     } catch {
-      setNotificationContent(['error', `error creating blog`]);
+      setNotificationContent(['error', `error creating blog`])
     }
-  };
 
   const updateBlogLikes = async (id, updatedBlog) => {
     try {
@@ -151,4 +150,4 @@ const App = () => {
   }
 };
 
-export default App;
+export default App
