@@ -13,9 +13,10 @@ const blog = {
 }
 
 let component
+const mockHandler = jest.fn()
 
 beforeEach(() => {    
-  component = render(<Blog blog={blog}/>)
+  component = render(<Blog blog={blog} updateBlogLikes={mockHandler}/>)
 })
 
 test('renders the blog title and author, but does not render the URL or number of likes by default', () => {
@@ -31,4 +32,16 @@ test('blog URL and likes are shown when the button is clicked', async () => {
 
   expect(component.container.querySelector('.likes')).toHaveTextContent(`Likes: ${blog.likes}`)
   expect(component.container.querySelector('.url')).toHaveTextContent(blog.url)
+})
+
+test('like event handler is called twice if the like button is called twice', async () => {
+ 
+  const user = userEvent.setup()
+  const buttonShowHide = screen.getByText('show')
+  await user.click(buttonShowHide)
+  const buttonLike = screen.getByText('like')
+  await user.click(buttonLike)
+  await user.click(buttonLike)
+  
+  expect(mockHandler.mock.calls).toHaveLength(2)
 })
