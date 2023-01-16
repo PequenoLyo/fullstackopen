@@ -81,8 +81,9 @@ const App = () => {
         `a new blog with title '${newBlog.title}' by ${newBlog.author} has been added`,
       ]);
     } catch {
-      setNotificationContent(['error', `error creating blog`])
+      setNotificationContent(['error', `error creating blog`]);
     }
+  };
 
   const updateBlogLikes = async (id, updatedBlog) => {
     try {
@@ -96,15 +97,15 @@ const App = () => {
 
   const deleteBlog = async (id) => {
     try {
-      await blogService.remove(id)
-  
-      const newBlogs = blogs.filter(blog => blog.id !== id)
-      setBlogs(newBlogs)
-      setNotificationContent(['success', 'blog deleted successfully'])
+      await blogService.remove(id);
+
+      const newBlogs = blogs.filter((blog) => blog.id !== id);
+      setBlogs(newBlogs);
+      setNotificationContent(['success', 'blog deleted successfully']);
     } catch {
-      setNotificationContent(['error', 'error deleting blog'])
+      setNotificationContent(['error', 'error deleting blog']);
     }
-  }
+  };
 
   if (!user) {
     return (
@@ -143,11 +144,16 @@ const App = () => {
         {blogs
           .sort((a, b) => b.likes - a.likes)
           .map((blog) => (
-            <Blog key={blog.id} blog={blog} updateBlogLikes={updateBlogLikes} deleteBlog={deleteBlog} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              updateBlogLikes={updateBlogLikes}
+              deleteBlog={deleteBlog}
+            />
           ))}
       </div>
     );
   }
 };
 
-export default App
+export default App;
