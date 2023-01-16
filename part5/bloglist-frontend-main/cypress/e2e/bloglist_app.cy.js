@@ -1,9 +1,36 @@
 describe('Bloglist app', function() {
   beforeEach(function() {
-    cy.visit('http://localhost:8080')
-    cy.contains('login')
+    cy.request('POST', 'http://localhost:8080/api/testing/reset')
+    const user = {
+      name: 'Élio Maia',
+      username: 'Pequeno',
+      password: 'password'
+    }
+    cy.request('POST', 'http://localhost:8080/api/users/', user)
+    cy.visit('http://localhost:3000')
   })
+
+  it('Login form is shown', function() {
+    cy.contains('login')  
+  })
+
+  describe('Login tests', function() {
+    it('succeeds with correct credentials', function() {
+      cy.get('input[name=Username]').type('Pequeno')
+      cy.get('input[name=Password]').type('password')
+      cy.get('button').click()
+      cy.contains('Élio Maia logged in')
+    })
+
+    it('fails with wrong credentials', function() {
+      cy.get('input[name=Username]').type('wrong')
+      cy.get('input[name=Password]').type('wrong')
+      cy.get('button').click()
+      cy.contains('login')
+    })
+  })
+
+
 })
 
-it('login form is shown', function() {
-})
+
