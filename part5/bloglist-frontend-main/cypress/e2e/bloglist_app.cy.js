@@ -46,12 +46,48 @@ describe('Bloglist app', function() {
       cy.get('.buttonLike').click()
     })
 
-    it.only('A blog can be deleted', function() {
+    it('A blog can be deleted', function() {
       cy.createBlog({title: 'test blog title', author: 'test author', url: 'www.test.com'})
       cy.contains('test blog title').parent().find('.buttonShowHide').click()
       cy.get('.buttonDelete').click()
       cy.get('html').should('not.contain', 'test blog title')
     })
+
+    it('The blogs are sorted by number of likes', function() {
+      cy.createBlog({title: 'blog with the second most likes', author: 'test author', url: 'www.test.com'})
+      cy.createBlog({title: 'blog with the most likes', author: 'test author', url: 'www.test.com'})
+      cy.createBlog({title: 'blog with the least likes', author: 'test author', url: 'www.test.com'})
+    
+      cy.contains('blog with the most likes').parent().find('.buttonShowHide').click()
+      cy.get('.buttonLike')
+        .click()
+        .wait(1000)
+        .click()
+        .wait(1000)
+        .click()
+        .wait(1000)
+        .click()
+        .wait(1000)
+      cy.contains('blog with the most likes').parent().find('.buttonShowHide').click()
+    
+      cy.contains('blog with the second most likes').parent().find('.buttonShowHide').click()
+      cy.get('.buttonLike')
+      .click()
+      .wait(1000)
+      .click()
+      .wait(1000)
+      cy.contains('blog with the second most likes').parent().find('.buttonShowHide').click()
+      
+      cy.contains('blog with the least likes').parent().find('.buttonShowHide').click()
+      cy.get('.buttonLike')
+      .click()
+      .wait(1000)
+      cy.contains('blog with the least likes').parent().find('.buttonShowHide').click()
+      
+      cy.get('.blog').eq(0).should('contain', 'blog with the most likes')
+      cy.get('.blog').eq(1).should('contain', 'blog with the second most likes')
+      cy.get('.blog').eq(2).should('contain', 'blog with the least likes')
+     })
     
   })
 

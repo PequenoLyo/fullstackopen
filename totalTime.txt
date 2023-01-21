@@ -4,6 +4,7 @@ Total times:
 - part2: 12:15:00
 - part3: 10:50:00
 - part4: 11:55:00
+- part5: 10:25:00
 
 Average times:
 - part2: 15.9
