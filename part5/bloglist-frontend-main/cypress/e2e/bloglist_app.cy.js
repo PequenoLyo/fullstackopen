@@ -39,6 +39,12 @@ describe('Bloglist app', function() {
       cy.createBlog({title: 'test blog title', author: 'test author', url: 'www.test.com'})
       cy.contains('test blog title')
     })
+
+    it('A blog can be liked', function() {
+      cy.createBlog({title: 'test blog title', author: 'test author', url: 'www.test.com'})
+      cy.contains('test blog title').parent().find('button').click()
+            cy.contains('like').click()
+    })
     
   })
 
