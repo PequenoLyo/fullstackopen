@@ -27,6 +27,17 @@ export const voteOn = (id) => {
   };
 };
 
+export const newAnecdote = (content) => {
+  return {
+    type: 'NEW_ANECDOTE',
+    data: {
+      content,
+      id: getId(),
+      votes: 0,
+    },
+  };
+};
+
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state);
   console.log('action', action);
@@ -44,7 +55,11 @@ const reducer = (state = initialState, action) => {
       );
     }
     case 'NEW_ANECDOTE':
-      return state;
+      return state.concat({
+        content: action.data.content,
+        id: action.data.id,
+        votes: action.data.votes,
+      });
     case 'ZERO':
       return initialState;
     default:
