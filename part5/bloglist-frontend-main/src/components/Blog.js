@@ -30,7 +30,7 @@ const Blog = ({ blog, updateBlogLikes, deleteBlog }) => {
       <div>
         <span className='title'>{blog.title} - </span>
         <span className='author'>{blog.author}</span>{' '}
-        <button onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button>
+        <button className='buttonShowHide' onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button>
       </div>
 
       {visible && (
@@ -38,12 +38,12 @@ const Blog = ({ blog, updateBlogLikes, deleteBlog }) => {
           <div className='url'>{blog.url}</div>
 
           <div className='likes'>
-            Likes: {blog.likes} <button onClick={handleLike}>like</button>
+            Likes: {blog.likes} <button className='buttonLike' onClick={handleLike}>like</button>
           </div>
 
           {blog.user && <div>{blog.user.name}</div>}
 
-          <button onClick={handleDelete}>remove</button>
+          <button className='buttonDelete' onClick={handleDelete}>remove</button>
         </div>
       )}
     </div>

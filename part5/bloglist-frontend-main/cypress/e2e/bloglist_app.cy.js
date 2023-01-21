@@ -42,8 +42,15 @@ describe('Bloglist app', function() {
 
     it('A blog can be liked', function() {
       cy.createBlog({title: 'test blog title', author: 'test author', url: 'www.test.com'})
-      cy.contains('test blog title').parent().find('button').click()
-            cy.contains('like').click()
+      cy.contains('test blog title').parent().find('.buttonShowHide').click()
+      cy.get('.buttonLike').click()
+    })
+
+    it.only('A blog can be deleted', function() {
+      cy.createBlog({title: 'test blog title', author: 'test author', url: 'www.test.com'})
+      cy.contains('test blog title').parent().find('.buttonShowHide').click()
+      cy.get('.buttonDelete').click()
+      cy.get('html').should('not.contain', 'test blog title')
     })
     
   })
