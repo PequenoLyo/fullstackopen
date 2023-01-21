@@ -30,6 +30,18 @@ describe('Bloglist app', function() {
     })
   })
 
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.login({username: 'Pequeno', password: 'password'})
+    })
+
+    it('A blog can be created', function() {
+      cy.createBlog({title: 'test blog title', author: 'test author', url: 'www.test.com'})
+      cy.contains('test blog title')
+    })
+    
+  })
+
 
 })
 
