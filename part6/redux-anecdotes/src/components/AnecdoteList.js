@@ -2,7 +2,6 @@ import Anecdote from './Anecdote'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { voteOn } from '../reducers/anecdoteReducer';
-import { newAnecdote } from '../reducers/anecdoteReducer';
 import { sortAnecdotes } from '../reducers/anecdoteReducer';
 
 const AnecdoteList = () => {
