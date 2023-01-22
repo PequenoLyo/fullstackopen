@@ -1,44 +1,51 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { voteOn } from './reducers/anecdoteReducer'
-import { newAnecdote } from './reducers/anecdoteReducer'
+import { useSelector, useDispatch } from 'react-redux';
+import { voteOn } from './reducers/anecdoteReducer';
+import { newAnecdote } from './reducers/anecdoteReducer';
+import { sortAnecdotes } from './reducers/anecdoteReducer'
 
 const App = () => {
-  const anecdotes = useSelector(state => state)
-  const dispatch = useDispatch()
+  const anecdotes = useSelector((state) => state);
+  const dispatch = useDispatch();
 
   const vote = (id) => {
-    
-    anecdotes.dispatch(voteOn(id))
-  }
+    anecdotes.dispatch(voteOn(id));
+  };
 
   const handleCreateAnecdote = (event) => {
-    event.preventDefault()
-    const anecdote = event.target.inputNewAnecdote.value
-    event.target.inputNewAnecdote.value = ""
-    dispatch(newAnecdote(anecdote))
-  }
+    event.preventDefault();
+    const anecdote = event.target.inputNewAnecdote.value;
+    event.target.inputNewAnecdote.value = '';
+    dispatch(newAnecdote(anecdote));
+  };
 
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {anecdotes.map((anecdote) => (
         <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
-          </div>
+          <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => dispatch(voteOn(anecdote.id))}>vote</button>
+            <button
+              onClick={() => {
+                dispatch(voteOn(anecdote.id));
+                dispatch(sortAnecdotes());
+              }}
+            >
+              vote
+            </button>
           </div>
         </div>
-      )}
+      ))}
       <h2>create new</h2>
       <form onSubmit={handleCreateAnecdote}>
-        <div><input name='inputNewAnecdote'/></div>
+        <div>
+          <input name="inputNewAnecdote" />
+        </div>
         <button>create</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

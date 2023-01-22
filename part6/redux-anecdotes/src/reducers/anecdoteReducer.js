@@ -38,6 +38,12 @@ export const newAnecdote = (content) => {
   };
 };
 
+export const sortAnecdotes = () => {
+  return {
+    type: 'SORT_BY_VOTES'
+  }
+}
+
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state);
   console.log('action', action);
@@ -60,6 +66,8 @@ const reducer = (state = initialState, action) => {
         id: action.data.id,
         votes: action.data.votes,
       });
+    case 'SORT_BY_VOTES':
+      return state.sort(function(a, b){return b.votes - a.votes})
     case 'ZERO':
       return initialState;
     default:
