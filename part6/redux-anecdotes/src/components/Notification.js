@@ -1,9 +1,8 @@
 import { useSelector } from 'react-redux'
-import notificationReducer from '../reducers/notificationReducer'
+//import notificationReducer from '../reducers/notificationReducer'
 
 const Notification = () => {
   const notification = useSelector(state => state.notification)
-  console.log(notification)
   if (!notification) { return null}
   const style = {
     border: 'solid',

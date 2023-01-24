@@ -38,12 +38,7 @@ const anecdoteSlice = createSlice({
       return state.map((anecdote) =>
         anecdote.id === id ? changedAnecdote : anecdote
       );
-    },
-    sortAnecdotes(state, action) {
-      return state.sort(function (a, b) {
-        return b.votes - a.votes;
-      });
-    },
+    },    
   },
 });
 
