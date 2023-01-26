@@ -6,7 +6,7 @@ const Anecdote = ({ anecdote, handleVote }) => {
         has {anecdote.votes}
         <button
           onClick={() => {
-            handleVote(anecdote)
+            handleVote(anecdote)           
           }}
         >
           vote

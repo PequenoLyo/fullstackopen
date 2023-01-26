@@ -1,7 +1,7 @@
 import Anecdote from './Anecdote'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeAnecdotes, voteOn } from '../reducers/anecdoteReducer'
+import { initializeAnecdotes, voteAnecdote } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
    const anecdotes = useSelector((state) =>
@@ -16,18 +16,14 @@ const AnecdoteList = () => {
 
   const dispatch = useDispatch()
   
-  useEffect(() => {
-    console.log('useEffect triggered')
+  useEffect(() => { 
     dispatch(initializeAnecdotes())
-  }, [dispatch])
-
- 
+  }, [dispatch])  
 
   const handleVote = (anecdote) => {
-    dispatch(voteOn(anecdote.id))
+    dispatch(voteAnecdote(anecdote))
   }
 
-  console.log(anecdotes)
   return (
     <div>
       {anecdotes.map((anecdote) => (
