@@ -11,18 +11,15 @@ const notificationSlice = createSlice({
   },
 });
 
-const setNotification = (notification) => {
-  return {
-    type: "notification/setNotification",
-    payload: notification,
-  };
-};
+export const { setNotification } = notificationSlice.actions
 
 export const newNotification = (notification, delay) => {
   return async (dispatch) => {
+    console.log(notification)
     dispatch(setNotification(notification))
+    
     setTimeout(function() { dispatch(setNotification(null)) }, delay * 1000)
-  }  
+  }
 };
 
 export default notificationSlice.reducer;
